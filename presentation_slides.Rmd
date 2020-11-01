@@ -17,6 +17,8 @@ output:
 
 ```{r setup, include = FALSE}
 options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(out.width = "40%", out.height = "40%")
+
 ```
 
 ```{r packages, include = FALSE}
@@ -55,7 +57,6 @@ xaringanExtra::use_extra_styles(hover_code_line = TRUE)
 style_duo(primary_color = "#1F4257", secondary_color = "#F97B64")
 
 ```
-
 class: center, middle 
 
 # Plan de la présentation 
@@ -158,11 +159,16 @@ Pour cela, on :
 - On obtient ainsi une distribution empirique du coefficient RV selon le nombre de permutations et on peux ainsi déterminer la significativité de la co-structure, i.e si la co-structure entre les 2 tableaux était dû à l'aléa ou non.
 
 ---
-class : center, middle
 
-# Un exemple : données simulées 
+# Un exemple : données simulées
+## Premier tableau : données d'abondances 
+
+.panelset[
+.panel[.panel-name[R Code]
 
 ```{r include=FALSE}
+
+# ON INCLUT PAS CE CHUNK DANS LA PRESENTATION 
 
 ##### On construit le premier tableau
 
@@ -230,50 +236,87 @@ for( i in 2:nsp ){
         col = cols[i], lwd = 2)
 }
 
-```
-
-```{r }
-
 # La structure des données est très simple, on a une succession des espèces le long du gradient
 table.value(data, clegend = 0)
 # En abscisse les stations, en ordonnée les espèces
 
+```
+
+```{r include=FALSE}
+
 # Dans la vraie vie, on ne connait pas dès le début l'ordre des espèces et des stations qui mettent
 # en évidence cette structure des données
 # Elles ressembleraient plutôt à ça :
+
+```
+
+On a simulé un jeu de données pour obtenir des données sur les abondances de poissons selon différents points de mesures effectués par des stations.
+
+```{r}
+
 data.vv <- data[sample(nrow(data)), sample(ncol(data))] # On permute aléatoirement lignes et colonnes
+head(data.vv[,1:15])
+
+```
+]
+.panel[.panel-name[Output]
+
+On représente ici la structure du jeu de donnés.
+
+```{r warning=FALSE, out.height="40%", out.width="40%"}
+
 table.value(data.vv, clegend = 0)
 
 ```
+On remarque bien qu'une structure va exister mais c'est désordonné dû aux aléas naturels
+]
+]
 
 ---
 
 # Réalisation de l'AFC du premier tableau
 
+.panelset[
+.panel[.panel-name[R Code]
+
+On fait l'Analyse Factorielle des Correspondances du tableau
+
 ```{r}
 
-# On fait l'AFC (car données d'abondance) du tableau
-afc <- dudi.coa(data.vv, scann = FALSE)
-scatter(afc)
-# On visualise bien l'effet Guttman (les données ont une forme de parabole)
-# Cet effet témoigne de liaisons fortes
+afc <- dudi.coa(data.vv,scannf = F)
 
-# Cela permet de ré-ordonner le tableau pour mettre en évidence le gradient
+```
+]
+.panel[.panel-name[Output]
+```{r out.height="40%", out.width="40%"}
+
+scatter(afc)
+
+```
+On visualise bien l'effet Guttman (les données ont une forme de parabole). <br>
+Cet effet témoigne de liaisons fortes entre les variables. (A VERIFIER)
+]
+.panel[.panel-name[rearrange]
+Cela permet de ré-ordonner le tableau pour mettre en évidence le gradient
+```{r warning=F, out.height="40%", out.width="40%"}
 data.vv.ord <- data.vv[order(afc$li[, 1]), order(afc$co[, 1])]
 table.value(data.vv.ord, clegend = 0)
 
 ```
+]
+]
 
 ---
+# Un exemple : données simulées
+## Deuxième tableau : données environnementales 
 
-# Réalisation de l'ACP du deuxième tableau
-
-```{r}
+```{r include=FALSE}
 
 ##### On construit le deuxième tableau
 
 # Mesure de la température dans chaque station, pour chaque heure de la journée
 mesureT <- sapply(Tstations, function(x){10*sin(seq(0, pi, le = 24)) + x})
+
 # Donc tableau avec 24 lignes et 16 colonnes
 colnames(mesureT) <- paste("st",1:16,sep="")
 rownames(mesureT)<-paste("h",1:24,sep="")
@@ -286,60 +329,153 @@ set.seed(1)
 mesureT <- sapply(Tstations, function(x){10*sin(seq(0, pi,le = 24)) + x + rnorm(n = 24, sd = 5)})
 colnames(mesureT) <- paste("st", 1:16, sep = "")
 rownames(mesureT) <- paste("h", 1:24, sep = "")
+
+```
+.panelset[
+
+.panel[.panel-name[R Code]
+```{r echo=TRUE, eval=FALSE}
+
+head(mesureT[,1:7])
+
 plot(0, type = "n", xlim = c(1,24), ylim = range(mesureT), xlab = "Heures",ylab = "Temperature",
      las = 1, main = "Température des stations") # Cadre vide
-apply(mesureT, 2, lines)
-# On a donc un gradient des stations froides aux stations chaudes
-# Et une composante circadienne
-# C'est difficile à voir vu l'intensité du bruit
+apply(mesureT, 2, lines) 
+
 table.value(mesureT, clegend = 0)
-
 ```
+]
 
-```{r}
+.panel[.panel-name[Dataset]
+On a les températures pour les 24 heures de la journée et ce pour chaque station.
 
-# On fait l'ACP (car données quanti) du tableau
-acp <- dudi.pca(t(mesureT), scan=FALSE) # t pour mettre les stations en ligne donc en tant qu'individus
+Dataset : 
+```{r echo=FALSE, eval=TRUE}
+head(mesureT[,1:7])
+```
+]
+
+.panel[.panel-name[Plot]
+On observe un gradient des stations froides aux stations chaudes et une composante circadienne.<br>
+.center[
+```{r echo=FALSE, eval=TRUE}
+plot(0, type = "n", xlim = c(1,24), ylim = range(mesureT), xlab = "Heures",ylab = "Temperature",
+     las = 1, main = "Température des stations") # Cadre vide
+apply(mesureT, 2, lines) 
+```
+]
+]
+
+.panel[.panel-name[Structure]
+Le gradient est difficile à observer ici dû à l'aléa de température utilisé
+.center[
+```{r echo=FALSE, eval=TRUE}
+table.value(mesureT)
+```
+]
+]
+]
+
+---
+
+# Réalisation de l'ACP du deuxième tableau
+
+.panelset[
+.panel[.panel-name[R Code]
+
+On fait l'Analyse en Composante Principales du second tableau
+
+```{r echo=TRUE, eval=FALSE}
+acp <- dudi.pca(t(mesureT), scan=FALSE) 
+# on transpose le tableau pour mettre les stations en ligne donc en tant qu'individus
 scatter(acp)
-# Le premier facteur représente la quasi-totalité de la variabilité, c'est simplement le gradient
-# thermique entre les stations
 plot(Tstations, acp$li[,1], ylab = "F1", xlab = "Température",
-     main = "Le premier facteur de l'ACP est\nle gradient thermique", pch = 19)
-
+     main = "Le premier facteur de l'ACP est le gradient thermique", pch = 19)
 ```
+]
+
+.panel[.panel-name[ACP plot]
+On observe que le premier axe participe très largement à la construction de l'ACP... <br> 
+.center[
+```{r echo=FALSE, eval=TRUE}
+scatter(acp)
+```
+]
+]
+
+.panel[.panel-name[1st axis plot]
+... car il s'agit du gradient de température qui structurait notre jeu de données initialement! <br>
+.center[
+```{r echo=FALSE, eval=TRUE}
+plot(Tstations, acp$li[,1], ylab = "F1", xlab = "Température",
+     main = "Le premier facteur de l'ACP est le gradient thermique", pch = 19)
+```
+]
+]
+]
 
 ---
 
 # Réalisation de la co-inertie
+## Vérifications 
+.panelset[
+.panel[.panel-name[Vérification 1]
 
+.pull-left[1) On vérifie que les individus sont bien en ligne dans les deux tableaux et on réarrange au besoin. <br>
 ```{r}
-
-##### Couplage des deux tableaux
-
-# On fait les vérifications nécessaires
-# 1. Les individus communs aux deux tableaux sont-ils bien en ligne dans les deux tableaux ?
 dim(data)
 dim(mesureT)
+```
+]
+.pull-right[2) On réordonne les tableaux. <br>
+```{r}
 tab1 <- as.data.frame(t(data))
 tab2 <- as.data.frame(t(mesureT))
-dim(tab1)
-dim(tab2)
-# 2. Les individus communs aux deux tableaux sont-ils bien dans le même ordre dans les deux tableaux ?
+dim(tab1) ; dim(tab2)
+```
+]
+]
+
+.panel[.panel-name[Vérification 2]
+On vérifie que les individus sont bien dans le même ordre dans les deux tableaux. <br>
+
+```{r}
 all.equal(rownames(tab1),rownames(tab2))
-# 3. La même pondération a-t-elle bien été utilisée pour les deux analyses ?
+```
+]
+
+.panel[.panel-name[Vérification 3]
+On vérifie que la même pondération a été utilisée pour les deux analyses.
+```{r}
 coa <- dudi.coa(df = tab1, scannf = FALSE, nf = 2)
 pca <- dudi.pca(df = tab2, row.w = coa$lw, scannf = FALSE, nf = 2)
 all.equal(pca$lw,coa$lw)
-
-# Tout est bon, on peut utiliser l'analyse de co-inertie pour coupler les deux tableaux
-cia <- coinertia(dudiX = pca, dudiY = coa, scannf = FALSE, nf = 2)
-cia$eig[1]/sum(cia$eig)
-# Le premier facteur extrait 99.3% de la variabilité, c'est le gradient thermique (commun aux 2 tableaux)
-
 ```
+]
+]
 
 ---
+# Réalisation de la co-inertie
+Tout est bon, on peut utiliser l'analyse de co-inertie pour coupler les deux tableaux. <br>
 
+.panelset[
+.panel[.panel-name[Co-inertie]
+```{r}
+cia <- coinertia(dudiX = pca, dudiY = coa, scannf = FALSE, nf = 2)
+```
+]
+.panel[.panel-name[Valeurs propres]
+On regarde les premières valeurs propres 
+```{r}
+cia$eig[1]/sum(cia$eig)
+cia$eig[2]/sum(cia$eig)
+cia$eig[3]/sum(cia$eig)
+```
+Le premier facteur extrait 99.3% de la variabilité, c'est le gradient thermique (commun aux 2 tableaux).
+]
+]
+
+---
 # Test de la significativité
 
 ```{r}
@@ -380,43 +516,9 @@ table.value(cia$tab, clabel.row = 0.7, clabel.col = 0.7)
 
 ---
 
-
-On peux ainsi réaliser des graphiques pour l'interprétation 
-.panelset[
-.panel[.panel-name[R Code]
-
-```{r fig.show='hide'}
-# r code for the s.arrow plot 
-```
-]
-.panel[.panel-name[sarrowplot1]
-![](figures/sarrowplot1.png)
-]
-]
-
----
-
-## .can-edit[You can edit this slide title]
-
-<!-- .panelset[ -->
-<!-- .panel[.panel-name[R Code] -->
-
-<!-- ```{r panel-chunk, fig.show='hide'} -->
-<!-- # ... r code ... -->
-<!-- ``` -->
-<!-- ] -->
-
-<!-- .panel[.panel-name[Plot] -->
-
-<!-- ![](README_files/figure-gfm/panel-chunk-1.png) -->
-<!-- ] -->
-<!-- ] -->
-
----
-
 # 3 - Pour aller plus loin...
-
-On peux s'intéresser non pas à une analyse de co-inertie à 2 tableaux mais à K tableaux!<sup>1</sup>
+On peux s'intéresser non pas à une analyse de co-inertie à 2 tableaux mais à K tableaux!
+<sup>1</sup>
 
 .footnote[
 [1] [Chessel, D. and M. Hanafi. “Analyses de la co-inertie de K nuages de points.” (1996).](http://www.numdam.org/article/RSA_1996__44_2_35_0.pdf)
@@ -436,15 +538,14 @@ données protéomiques." (2017) [lien-2](https://pbil.univ-lyon1.fr/R/pdf/tdr641
 
 ---
 
-# Pour résumer, à vous de jouer!
+# Pour résumer
 
-Les packages nécessaires : `{ade4} et {adegraphics}`
+Les packages nécessaires : `{ade4}` et `{adegraphics}` <br>
+Les fonctions utiles : 
+- `ade4::dudi.pca ou ade4::dudi.fca` 
+- `ade4::coinertia`
 
-- .can-edit[Le premier point essentiel... selon vous!]
 
-- .can-edit[Le deuxième point essentiel]
-
-- .can-edit[Le troisième point essentiel]
 
 ---
 class: center, middle
