@@ -7,7 +7,7 @@ date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: ["xaringan-themer.css",robot-fonts]
+    css: ["xaringan-themer.css","mytheme.css"]
     chakra: libs/remark-latest.min.js
     nature:
       highlightStyle: solarized-light
@@ -45,17 +45,14 @@ xaringanExtra::use_tachyons()
 xaringanExtra::use_tile_view()
 xaringanExtra::use_editable(expires = 1)
 xaringanExtra::use_panelset()
-xaringanExtra::use_animate_css()
 xaringanExtra::use_extra_styles(hover_code_line = TRUE)
 
 ```
 
-
 ```{r xaringan-themer, include=FALSE}
-
 # sélection du thème de couleurs du slideshow
-style_duo(primary_color = "#1F4257", secondary_color = "#F97B64")
-
+style_duo(primary_color = "#1F4257", secondary_color = "#F97B64",
+          header_h1_font_size="2.25rem",header_h2_font_size="1.75rem")
 ```
 class: center, middle 
 
@@ -385,7 +382,7 @@ table.value(mesureT)
 
 On fait l'Analyse en Composante Principales du second tableau
 
-```{r echo=TRUE, eval=FALSE}
+```{r echo=TRUE, eval=TRUE}
 acp <- dudi.pca(t(mesureT), scan=FALSE) 
 # on transpose le tableau pour mettre les stations en ligne donc en tant qu'individus
 scatter(acp)
@@ -513,7 +510,6 @@ table.value(cia$tab, clabel.row = 0.7, clabel.col = 0.7)
 
 ```
 
-
 ---
 
 # 3 - Pour aller plus loin...
@@ -526,6 +522,15 @@ On peux s'intéresser non pas à une analyse de co-inertie à 2 tableaux mais à
 
 ---
 
+# Pour résumer
+
+Les packages nécessaires : `{ade4}` et `{adegraphics}` <br>
+Les fonctions utiles : 
+- `ade4::dudi.pca ou ade4::dudi.fca` 
+- `ade4::coinertia`
+
+---
+
 # Bibliographie 
 
 - Chessel D. and Hanafi M. “Analyses de la co-inertie de K nuages de points.” (1996)
@@ -535,17 +540,6 @@ On peux s'intéresser non pas à une analyse de co-inertie à 2 tableaux mais à
 données protéomiques." (2017) [lien-2](https://pbil.univ-lyon1.fr/R/pdf/tdr641.pdf)
 
 - de Magny C. et al. "De la statistique élémentaire à l'analyse de co-inertie." (2006) [lien-3](https://www.researchgate.net/publication/282171950_De_la_statistique_elementaire_a_l'analyse_de_co-inertie) 
-
----
-
-# Pour résumer
-
-Les packages nécessaires : `{ade4}` et `{adegraphics}` <br>
-Les fonctions utiles : 
-- `ade4::dudi.pca ou ade4::dudi.fca` 
-- `ade4::coinertia`
-
-
 
 ---
 class: center, middle
