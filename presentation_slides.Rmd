@@ -89,8 +89,10 @@ Cadre typique : un tableau avec plutôt des variables réponses (matrice Y) et l
 
 --
 
-Notre exemple : des stations de mesures avec dans un premier tableau des variables d'abondances d'espèces (Y) et dans le deuxième tableau des variables environnementales(X) ). <br>
-Obectif : regarder les relations entre les abondances et l'environnement
+Notre exemple : des stations de mesures avec dans un premier tableau des variables d'abondances d'espèces (Y) et dans le deuxième tableau des variables environnementales(X)). 
+<br>
+
+*Objectif* : regarder les relations entre les abondances et l'environnement
 
 ---
 
@@ -102,7 +104,8 @@ Obectif : regarder les relations entre les abondances et l'environnement
 
 --
 
-- La pondération entre les deux analyses factorielles doit être identique. Il faut donc fixer les poids pour un tableau en fonction du deuxième, souvent le tableau qui fixe les poids est celui des variables explicatives (X). (explication genre le tableau qui permute les lignes pour le test du coeff RV n'est pas celui qui a fourni les poids).
+- La pondération entre les deux analyses factorielles doit être identique. Il faut donc fixer les poids pour un tableau en fonction du deuxième, souvent le tableau qui fixe les poids est celui des variables explicatives (X). 
+(explication genre le tableau qui permute les lignes pour le test du coeff RV n'est pas celui qui a fourni les poids).
 
 --
 
@@ -114,18 +117,24 @@ Obectif : regarder les relations entre les abondances et l'environnement
 # 1) La co-inertie c'est quoi?
 ## La démarche 
 
-- Il faut d'abord réaliser une analyse factorielle (ACP/AFC/ACM) pour chaque tableaux afin d'obtenir deux sous-espaces (ou nuage de points).
+- on realise une analyse factoriel sur chaque tableau
 
-(figures/schema_coinertia1.png) # gerer la taille de l'image
+![](figures/schema_coinertia1.png) 
+
+
+---
+
+# 1) La co-inertie c'est quoi?
+## La démarche 
+
+--
+
+![coucou](figures/schema_coinertia2.png) 
 
 --
 
 - On "couple" ensuite ces 2 nuages de points par le critère de la maximisation de la covariance : 
 $$\operatorname{cov}^{2}\left(X Q u_{1}, Y R v_{1}\right)=\operatorname{cor}^{2}\left(X Q u_{1}, Y R v_{1}\right) \operatorname{var}\left(X Q u_{1}\right) \operatorname{var}\left(Y R v_{1}\right)$$
-
-A REFORMULER
-La formule explique donc que l'on cherche a garder les variabilités de chaque tableaux indépendamment mais également la corrélation entre les 2 tableaux pour que les nuages de points soit plutôt homogènes.
-
 --
   
 - On obtient ainsi un seul sous-espace maximisant les relations entre les variables des 2 tableaux.
@@ -145,7 +154,7 @@ ou bien
 
 $$R V_{\max }(\mathbf{X}, \mathbf{Y})=\sqrt{\frac{\sum_{i=1}^{q}\lambda_{i}^{2}}{\sum_{i=1}^{q}\lambda_{i}^{2}}}$$
 
-EXPLIQUEZ LES VALEURS DES COEFFS
+EXPLIQUEZ LES VALEURS DES COEFFS / vous etes sur de vouloir mettre ca ?
 
 ---
 
@@ -158,7 +167,7 @@ Pour cela, on :
 
 --
 
-- Calcule la valeur de la co-inertie totale grâce aux coefficient RV entre les 2 tableaux
+- Calcule du coefficient RV entre les 2 tableaux (coefficient de correlation)
 
 --
 
@@ -170,8 +179,7 @@ Pour cela, on :
 
 --
 
-On obtient ainsi une distribution empirique du coefficient RV selon le nombre de permutations et on peux ainsi déterminer la significativité de la co-structure, i.e si la co-structure entre les 2 tableaux était dû à l'aléa ou non.
-
+![](figures/Rplot.png)
 ---
 
 # 2) Un exemple : données simulées
@@ -256,6 +264,7 @@ table.value(data, clegend = 0)
 On a simulé un jeu de données pour obtenir des données sur les abondances de poissons selon différents points de mesures effectués par des stations.
 
 ```{r eval=TRUE}
+# diapo vraiment utile ?
 
 data.vv <- data[sample(nrow(data)), sample(ncol(data))] # On permute aléatoirement lignes et colonnes
 head(data.vv[,1:15])
@@ -268,9 +277,10 @@ head(data.vv[,1:15])
 ## Premier tableau : données d'abondances 
 
 On représente ici la structure du jeu de donnés.
+#####diapo vraiment utile ?
+
 .center[
 ```{r}
-
 table.value(data.vv)
 
 ```
@@ -282,7 +292,7 @@ On remarque bien qu'une structure va exister mais c'est désordonné dû aux al�
 # 2) Un exemple : données simulées
 # Réalisation de l'AFC du premier tableau
 
-On fait l'Analyse Factorielle des Correspondances du tableau
+On fait l'Analyse Factorielle des Correspondances du tableau # de quel tableau 
 ```{r out.height="35%"}
 afc <- dudi.coa(data.vv,scannf = F)
 scatter(afc)
@@ -294,6 +304,8 @@ scatter(afc)
 
 # 2) Un exemple : données simulées
 # Réalisation de l'AFC du premier tableau
+
+###### moi je commencerais direct la 
 
 On ré-ordonne le tableau pour mettre en évidence la structure dûe au gradient de température.
 ```{r}
@@ -395,6 +407,8 @@ dim(tab1) ; dim(tab2)
 
 # 2) Un exemple : données simulées
 ## Réalisation de la co-inertie - Vérifications 
+
+#### vraiment utile ?
 
 3) On vérifie que les individus sont bien dans le même ordre dans les deux tableaux. <br>
 ```{r}
@@ -504,7 +518,15 @@ Les fonctions utiles :
 - `ade4::coinertia`
 
 La démarche à adopter :
+- etape 1 : Analyse factoriel simple (ACP, ACM, AFC) `ade4::dudi.pca ou ade4::dudi.fca`
 
+- etape 2 : verifier le poid de chaque nuage de poid `dudi.pca$lw`
+
+- etape 3 : faire la coinerntie entre les deux plans factoriel `ade4::coinertia`
+
+- etape 4 : tester la significativité de la coinertie : test de Monte-Carlo. `randtest(results_coinertia, nrepet=1000)`
+
+- etape 5 : si significative, analyse de la co-inertie.
 ---
 
 # Bibliographie 
@@ -517,10 +539,11 @@ données protéomiques." (2017) [lien-2](https://pbil.univ-lyon1.fr/R/pdf/tdr641
 
 - de Magny C. et al. "De la statistique élémentaire à l'analyse de co-inertie." (2006) [lien-3](https://www.researchgate.net/publication/282171950_De_la_statistique_elementaire_a_l'analyse_de_co-inertie) 
 
+-  A. Pannard Rennes 2, "Multivariate analysis in Ecology"
 ---
 class: center, middle
 
-# Merci ppur votre attention ! 
+# Merci pour votre attention ! 
 
 Slides crée via le package R [**xaringan**](https://github.com/yihui/xaringan).
 
