@@ -33,7 +33,6 @@ knitr::opts_chunk$set(out.width = "40%",out.height = "40%",
 
 library(ade4)
 library(adegraphics)
-library(tidyverse)
 library(xaringan)
 library(xaringanthemer)
 library(xaringanExtra)
@@ -117,26 +116,32 @@ Notre exemple : des stations de mesures avec dans un premier tableau des variabl
 # 1) La co-inertie c'est quoi?
 ## La démarche 
 
-- on realise une analyse factoriel sur chaque tableau
+On réalise une analyse factorielle sur chacun des deux tableaux.
 
-![](figures/schema_coinertia1.png) 
-
+.center[
+![analyse factorielle](figures/schema_coinertia1.png)
+]
 
 ---
 
 # 1) La co-inertie c'est quoi?
 ## La démarche 
 
+- On réalise ensuite la co-inertie sur les deux nuages de points obtenus.
+
+.center[
+```{r echo=FALSE, out.height= "35%", out.extra=FALSE}
+knitr::include_graphics("figures/schema_coinertia2.png")
+```
+]
+
 --
 
-![coucou](figures/schema_coinertia2.png) 
-
---
-
-- On "couple" ensuite ces 2 nuages de points par le critère de la maximisation de la covariance : 
+- On "couple" ensuite ces 2 nuages de points par le critère de maximisation de la covariance : 
 $$\operatorname{cov}^{2}\left(X Q u_{1}, Y R v_{1}\right)=\operatorname{cor}^{2}\left(X Q u_{1}, Y R v_{1}\right) \operatorname{var}\left(X Q u_{1}\right) \operatorname{var}\left(Y R v_{1}\right)$$
+
 --
-  
+
 - On obtient ainsi un seul sous-espace maximisant les relations entre les variables des 2 tableaux.
 
 ---
@@ -161,13 +166,13 @@ EXPLIQUEZ LES VALEURS DES COEFFS / vous etes sur de vouloir mettre ca ?
 # La démarche 
 ## Test de co-structure
 
-On cherche à tester la significativité de la co-structure entre les 2 tableaux afin de déterminer si il y a bel et bien des relations entres les variables des deux tableaux d'origine.
+On cherche à tester la significativité de la co-structure entre les 2 tableaux afin de déterminer si il y a bel et bien des relations entre les variables des deux tableaux d'origine.
 
 Pour cela, on :
 
 --
 
-- Calcule du coefficient RV entre les 2 tableaux (coefficient de correlation)
+- Calcule le coefficient RV entre les 2 tableaux (coefficient de corrélation)
 
 --
 
@@ -175,11 +180,16 @@ Pour cela, on :
 
 --
 
-- Itère ce processus autant de fois que l'on veux (au moins 1000 fois)
+- Itère ce processus autant de fois que l'on veux (au moins 900 fois).
 
 --
 
-![](figures/Rplot.png)
+.center[
+```{r echo=FALSE, out.height= "30%", out.extra=FALSE}
+knitr::include_graphics("figures/Rplot.png")
+```
+]
+
 ---
 
 # 2) Un exemple : données simulées
@@ -256,43 +266,42 @@ for( i in 2:nsp ){
 }
 
 # La structure des données est très simple, on a une succession des espèces le long du gradient
-table.value(data, clegend = 0)
+table.value(data,)
 # En abscisse les stations, en ordonnée les espèces
 
 ```
 
 On a simulé un jeu de données pour obtenir des données sur les abondances de poissons selon différents points de mesures effectués par des stations.
 
-```{r eval=TRUE}
-# diapo vraiment utile ?
+# diapo vraiment utile ? juste pour montrer la gueule du dataset quoi nan?
 
+```{r eval=TRUE}
 data.vv <- data[sample(nrow(data)), sample(ncol(data))] # On permute aléatoirement lignes et colonnes
 head(data.vv[,1:15])
-
 ```
 
----
+<!-- --- -->
 
-# 2) Un exemple : données simulées
-## Premier tableau : données d'abondances 
+<!-- # 2) Un exemple : données simulées -->
+<!-- ## Premier tableau : données d'abondances -->
 
-On représente ici la structure du jeu de donnés.
-#####diapo vraiment utile ?
+<!-- On représente ici la structure du jeu de donnés. -->
+<!-- #####diapo vraiment utile ? -->
 
-.center[
-```{r}
-table.value(data.vv)
+<!-- .center[ -->
+<!-- ```{r} -->
+<!-- table.value(data.vv) -->
 
-```
-]
-On remarque bien qu'une structure va exister mais c'est désordonné dû aux aléas naturels.
+<!-- ``` -->
+<!-- ] -->
+<!-- On remarque bien qu'une structure va exister mais c'est désordonné dû aux aléas naturels. -->
 
 ---
 
 # 2) Un exemple : données simulées
 # Réalisation de l'AFC du premier tableau
 
-On fait l'Analyse Factorielle des Correspondances du tableau # de quel tableau 
+On fait l'Analyse Factorielle des Correspondances du premier tableau
 ```{r out.height="35%"}
 afc <- dudi.coa(data.vv,scannf = F)
 scatter(afc)
@@ -308,6 +317,7 @@ scatter(afc)
 ###### moi je commencerais direct la 
 
 On ré-ordonne le tableau pour mettre en évidence la structure dûe au gradient de température.
+
 ```{r}
 data.vv.ord <- data.vv[order(afc$li[, 1]), order(afc$co[, 1])]
 table.value(data.vv.ord)
@@ -347,16 +357,17 @@ head(mesureT[,1:7])
 ```
 
 ---
+
 # 2) Un exemple : données simulées
 ## Deuxième tableau : données environnementales 
 
 On représente graphiquement pour bien observer le gradient de température pour chaque station et l'aléa généré pour "coller" à des données réelles ainsi que la composante circadienne.
 
-```{r eval=TRUE}
-plot(0, type = "n", xlim = c(1,24), ylim = range(mesureT), xlab = "Heures",ylab = "Temperature",
-     las = 1, main = "Température des stations") # Cadre vide
-apply(mesureT, 2, lines) # trace les courbes de température 
+.center[
+```{r echo=FALSE, eval=TRUE}
+knitr::include_graphics("figures/line_plot_tab2.png")
 ```
+]
 
 ---
 
@@ -378,7 +389,7 @@ On observe le résultat de l'ACP. 99%... est expliqué par la première composan
 # 2) Un exemple : données simulées
 ## Réalisation de l'ACP du deuxième tableau
 
-```{r, eval=TRUE}
+```{r eval=TRUE}
 plot(Tstations, acp$li[,1], ylab = "F1", xlab = "Température",
      main = "Le premier facteur de l'ACP est le gradient thermique", pch = 19)
 ```
@@ -390,37 +401,31 @@ On remarque bien que la première valeur propre F1 de l'ACP est très fortement 
 ## Réalisation de la co-inertie - Vérifications 
 
 .pull-left[1) On vérifie que les individus sont bien en ligne dans les deux tableaux et on réarrange au besoin. <br>
-```{r}
+```{r eval=TRUE}
 dim(data)
 dim(mesureT)
 ```
-]
-.pull-right[2) On réordonne les tableaux. <br>
-```{r}
+
+Puis on réordonne les tableaux au besoin (ici il faut transposer). <br>
+```{r eval=TRUE}
 tab1 <- as.data.frame(t(data))
 tab2 <- as.data.frame(t(mesureT))
 dim(tab1) ; dim(tab2)
 ```
 ]
-
----
-
-# 2) Un exemple : données simulées
-## Réalisation de la co-inertie - Vérifications 
-
-#### vraiment utile ?
-
-3) On vérifie que les individus sont bien dans le même ordre dans les deux tableaux. <br>
-```{r}
+.pull-right[
+2) On vérifie que les individus sont bien dans le même ordre dans les deux tableaux. <br>
+```{r eval=TRUE}
 all.equal(rownames(tab1),rownames(tab2))
 ```
 
-4) On vérifie que la même pondération a été utilisée pour les deux analyses.
-```{r}
+3) On vérifie que la même pondération a été utilisée pour les deux analyses.
+```{r eval=TRUE}
 coa <- dudi.coa(df = tab1, scannf = FALSE, nf = 2)
 pca <- dudi.pca(df = tab2, row.w = coa$lw, scannf = FALSE, nf = 2)
 all.equal(pca$lw,coa$lw)
 ```
+]
 
 ---
 
@@ -440,6 +445,7 @@ cia$eig[1]/sum(cia$eig) ; cia$eig[2]/sum(cia$eig) ; cia$eig[3]/sum(cia$eig)
 Le premier facteur extrait 99.3% de la variabilité, c'est le gradient thermique (commun aux 2 tableaux).
 
 ---
+
 # 2) Un exemple : données simulées
 ## Test de la significativité
 
@@ -455,11 +461,12 @@ les 2 tables) et la distribution empirique du coefficient RV qd on détruit la c
 # 2) Un exemple : données simulées
 ## Test de la significativité
 
-```{r}
+```{r warning=FALSE, out.height="30%",out.extra="30%", out.extra='style="float:left; padding:10px"'}
 ciatest <- randtest(cia, nrepet =  999, fixed = 2)
 plot(ciatest)
 ```
-Donc ici la co-structure ou corrélation est importante entre les 2 tables, car le RV est bien supérieur à la distribution aléatoire entre les 2 tables (= si pas de corrélation).
+### VERIFIER LES POIDS CA VA PAS LAA
+Donc ici la co-structure ou corrélation est importante entre les 2 tables, car le RV est bien supérieur à la distribution aléatoire entre les 2 tables (si pas de corrélation).
 
 ---
 # 2) Un exemple : données simulées
@@ -471,7 +478,6 @@ On représente les données d'abondance du premier tableau.
 table.value(t(coa$tab))
 ```
 On a.... 
-
 
 ---
 # 2) Un exemple : données simulées
@@ -496,8 +502,6 @@ table.value(cia$tab)
 ```
 On a ....
 
-
-
 ---
 
 # 3 - Pour aller plus loin...
@@ -513,20 +517,19 @@ On peux s'intéresser non pas à une analyse de co-inertie à 2 tableaux mais à
 # Pour résumer
 
 Les packages nécessaires : `{ade4}` et `{adegraphics}` <br>
-Les fonctions utiles : 
-- `ade4::dudi.pca ou ade4::dudi.fca` 
-- `ade4::coinertia`
 
 La démarche à adopter :
-- etape 1 : Analyse factoriel simple (ACP, ACM, AFC) `ade4::dudi.pca ou ade4::dudi.fca`
+- Etape 1 : Analyse factorielle simple (ACP, ACM, AFC) avec les fonctions `ade4::dudi.pca ou ade4::dudi.fca ou ade4::dudi.acm`
 
-- etape 2 : verifier le poid de chaque nuage de poid `dudi.pca$lw`
+- Etape 2 : Vérifications de la structure des individus dans les deux tableaux et vérifications des poids de chaque nuages de points avec `dudi.pca$lw`
 
-- etape 3 : faire la coinerntie entre les deux plans factoriel `ade4::coinertia`
+- Etape 3 : faire la co-inertie entre les deux plans factoriel `ade4::coinertia`
 
-- etape 4 : tester la significativité de la coinertie : test de Monte-Carlo. `randtest(results_coinertia, nrepet=1000)`
+- Etape 4 : tester la significativité de la [corrélation des deux tableaux] co-inertie : test de Monte-Carlo. <br>
+`randtest(results_coinertia, nrepet=999)`
 
-- etape 5 : si significative, analyse de la co-inertie.
+- Etape 5 : si le test est intéressant, interprétation des analyses de co-inertie (valeurs propres, graphiques)
+
 ---
 
 # Bibliographie 
@@ -540,12 +543,15 @@ données protéomiques." (2017) [lien-2](https://pbil.univ-lyon1.fr/R/pdf/tdr641
 - de Magny C. et al. "De la statistique élémentaire à l'analyse de co-inertie." (2006) [lien-3](https://www.researchgate.net/publication/282171950_De_la_statistique_elementaire_a_l'analyse_de_co-inertie) 
 
 -  A. Pannard Rennes 2, "Multivariate analysis in Ecology"
+
 ---
 class: center, middle
 
 # Merci pour votre attention ! 
 
-Slides crée via le package R [**xaringan**](https://github.com/yihui/xaringan).
+Slides crée via le package R [**xaringan**](https://github.com/yihui/xaringan). <br>
+
+Les informations sont disponibles à cette [adresse github](https://github.com/antoinelucasfra/co-inertia_project)
 
 
 
