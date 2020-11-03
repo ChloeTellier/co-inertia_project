@@ -1,6 +1,5 @@
 ---
 title: "La co-inertie"
-#subtitle: "Présentation"
 author: "Antoine Lucas, Julien Petot, Chloé Tellier"
 institute: "Agrocampus Ouest"
 date: "`r Sys.Date()`"
@@ -67,10 +66,7 @@ class: center, middle
 class: top
 
 # 1) La co-inertie : présentation
-
 ## Cadre général 
-
---
 
 - On a 2 tableaux : même individus et différentes variables 
 
@@ -80,27 +76,19 @@ class: top
 
 --
 
-Cadre typique : le premier tableau contient plutôt des variables réponses ; le deuxième tableau contient plutôt des variables explicatives. <br>
+Cadre typique : 
+- le premier tableau contient plutôt des variables réponses 
+
+- le deuxième tableau contient plutôt des variables explicatives. <br>
 
 --
 
-Exemple : le premier tableau contient, pour différentes stations de mesures, les données d'abondance de 10 espèces de poissons ; le deuxième tableau contient, pour les mêmes stations de mesures, des variables environnementales. <br>
+Exemple : 
+- le premier tableau contient, pour différentes stations de mesures, les données d'abondance d'espèces de poissons
+
+- le deuxième tableau contient, pour les mêmes stations de mesures, des variables environnementales.
 
 *Objectif* : regarder les relations entre les données d'abondance et les données environnementales.
-
----
-
-# 1)  La co-inertie : présentation
-
-## Contraintes
-
---
-
-- Les individus doivent être identiques, et dans le même ordre dans les deux tableaux.
-
---
-
-- Dans chacune des analyses factorielles réalisées, les individus doivent avoir la même pondération, i.e les poids attribués à la première analyse factorielle doivent être identiques aux poids de la seconde analyse factorielle.
 
 ---
 
@@ -134,7 +122,7 @@ knitr::include_graphics("figures/schema_coinertia2.png")
 
 --
 
-- On "couple" ensuite ces 2 nuages de points par le critère de maximisation de la covariance : 
+- On couple  ensuite ces 2 nuages de points par le critère de maximisation de la covariance : 
 $$\operatorname{cov}^{2}\left(X Q u_{1}, Y R v_{1}\right)=\operatorname{cor}^{2}\left(X Q u_{1}, Y R v_{1}\right) \operatorname{var}\left(X Q u_{1}\right) \operatorname{var}\left(Y R v_{1}\right)$$
 
 --
@@ -142,18 +130,24 @@ $$\operatorname{cov}^{2}\left(X Q u_{1}, Y R v_{1}\right)=\operatorname{cor}^{2}
 - On obtient ainsi un seul sous-espace, maximisant les relations entre les variables des 2 tableaux.
 
 ---
-
 # 1)  La co-inertie : présentation
+## Contraintes
 
-## La démarche 
+- Les individus doivent être identiques, et dans le même ordre dans les deux tableaux.
 
 --
+
+- Dans chacune des analyses factorielles réalisées, les individus doivent avoir la même pondération, *i.e* les poids attribués à la première analyse factorielle doivent être identiques aux poids de la seconde analyse factorielle.
+
+---
+# 1)  La co-inertie : présentation
+## La démarche 
 
 Les relations entre les deux tableaux sont indiqué par le coefficient de corrélation RV.
 
 --
 
-RV varie entre 0 et 1.
+Le coefficient RV est compris entre 0 et 1.
 
 --
 
@@ -166,22 +160,22 @@ RV varie entre 0 et 1.
 
 ## La démarche : test de co-structure
 
---
-
 On cherche à tester la significativité de la co-structure entre les 2 tableaux.
 
 --
 
-Pour cela, on calcule le coefficient RV entre les 2 tableaux (coefficient de corrélation). Puis on permute les lignes d'un des 2 tableaux, et on recalcule le coefficient RV en prenant en compte ce 'nouveau tableau'. On itère ce processus un grand nombre de fois (au moins 900 fois).
+- On calcule le coefficient RV entre les 2 tableaux (coefficient de corrélation)
+- Puis on permute les lignes d'un des 2 tableaux
+- Enfin on recalcule le coefficient RV en prenant en compte ce 'nouveau tableau'. On itère ce processus un grand nombre de fois.
 
 --
 
-Attention : le tableau sur lequel on effectue les permutations de ligne ne doit pas être celui qui a fourni les pondérations utilisées en analyse factorielle.
+__Attention!__ : le tableau sur lequel on effectue les permutations de ligne ne doit pas être celui qui a fourni les pondérations utilisées en analyse factorielle.
 
 --
 
 .center[
-```{r echo=FALSE, out.height= "30%", out.extra=FALSE}
+```{r echo=FALSE, out.height= "35%", out.extra=FALSE}
 knitr::include_graphics("figures/Rplot.png")
 ```
 ]
@@ -276,19 +270,21 @@ data.vv.ord <- data.vv[order(afc$li[, 1]), order(afc$co[, 1])]
 
 --
 
-On crée un jeu de données qui contient, pour 16 stations de mesure différentes, les données d'abondance de différents poissons. On a donc 16 individus et 10 variables.
+On crée un jeu de données qui contient :
+- 16 stations de mesure en ligne
+- 10 espèces de poissons en colonnes avec des données d'abondances <br>
+
+On a donc 16 individus et 10 variables.
 
 --
 
 .center[
-```{r echo=FALSE, out.height= "35%", out.extra=FALSE}
+```{r echo=FALSE, out.height= "35%"}
 table.value(data.vv.ord)
 ```
 ]
-
---
-
-On constate que pour chaque station, certains poissons sont présents et d'autres sont absents. Les stations semblent être réparties sur un gradient (mais de quelle variable ?) qui conditionne la présence et l'absence de certaines espèces.
+On constate que pour chaque station certains poissons sont présents et d'autres sont absents. <br>
+Les stations semblent être réparties selon un gradient (mais de quelle variable ?) qui conditionne la présence et l'absence de certaines espèces.
 
 ---
 
@@ -322,15 +318,15 @@ head(mesureT[,1:7])
 
 --
 
-On crée un jeu de données qui contient, pour les mêmes 16 stations de mesure, la température à chaque heure de la journée. On a donc 16 individus et 24 variables.
+On crée un jeu de données qui contient, pour les mêmes 16 stations de mesure, la température à chaque heure de la journée. <br> 
+
+On a donc 16 individus et 24 variables.
 
 --
-
-La représentation graphique suivante permet de bien observer les différences de température entre chaque station (ainsi que la composante circadienne et l'aléa généré, le 'bruit') :
-
 .center[
-```{r echo=FALSE, out.height= "35%", out.extra=FALSE}
-knitr::include_graphics("figures/line_plot_tab2.png")
+```{r echo=FALSE, out.height= "15%", out.extra=FALSE}
+# knitr::include_graphics("figures/line_plot_tab2.png")
+plot(ciatest)
 ```
 ]
 
@@ -340,13 +336,11 @@ knitr::include_graphics("figures/line_plot_tab2.png")
 
 ## Réalisation de l'AFC du premier tableau
 
---
-
 On réalise l'Analyse Factorielle des Correspondances du premier tableau.
 
 --
 
-```{r out.height="35%", out.extra=FALSE}
+```{r out.height="35%", out.extra=FALSE, fig.align="center"}
 afc <- dudi.coa(data.vv,scannf = F)
 scatter(afc)
 ```
@@ -361,38 +355,21 @@ On visualise bien l'effet Guttman : les données ont une forme de parabole.
 
 ## Réalisation de l'ACP du deuxième tableau
 
---
-
 On réalise l'Analyse en Composante Principale du second tableau.
 
 --
 
-```{r eval=TRUE, out.extra=FALSE, out.height="35%"}
+```{r eval=TRUE, out.height="35%"}
 acp <- dudi.pca(t(mesureT), scan=FALSE) 
 scatter(acp)
 ```
 
 --
 
-Le premier axe de l'ACP explique plus de 99% de la variabilité : on peut supposer qu'il s'agit du gradient de température entre les différentes stations.
+Le premier axe de l'ACP explique plus de 99% de la variabilité : il s'agit du gradient de température entre les différentes stations.
 
----
-
-# 2) Application à des données d'écologie
-
-## Réalisation de l'ACP du deuxième tableau
-
---
-
-Nous vérifions cette hypothèse :
-
-```{r eval=TRUE, out.extra=FALSE, out.height="35%"}
-plot(Tstations, acp$li[,1], ylab = "F1", xlab = "Température", pch = 19)
-```
-
---
-
-La première valeur propre de l'ACP, F1, correspond donc bien au gradient de température.
+???
+bien expliciter les composantes et la répartition des variables et individus
 
 ---
 
@@ -400,9 +377,7 @@ La première valeur propre de l'ACP, F1, correspond donc bien au gradient de tem
 
 ## Vérifications nécessaires à la réalisation de la co-inertie
 
---
-
-.pull-left[1) On vérifie que les individus sont bien en ligne dans les deux tableaux et on réarrange au besoin. <br>
+.pull-left[1) On vérifie que les individus sont bien en ligne dans les deux tableaux. 
 ```{r eval=TRUE}
 dim(data)
 dim(mesureT)
@@ -410,8 +385,7 @@ dim(mesureT)
 
 Il faut transposer nos tableaux pour mettre les stations de mesure en ligne. <br>
 ```{r eval=TRUE}
-tab1 <- as.data.frame(t(data))
-tab2 <- as.data.frame(t(mesureT))
+tab1 <- as.data.frame(t(data)) ; tab2 <- as.data.frame(t(mesureT))
 dim(tab1) ; dim(tab2)
 ```
 ]
@@ -438,8 +412,6 @@ all.equal(pca$lw,coa$lw)
 
 ## Réalisation de la co-inertie
 
---
-
 Une fois les vérifications effectuées, on peut utiliser l'analyse de co-inertie pour coupler les deux tableaux.
 
 ```{r}
@@ -448,21 +420,19 @@ cia <- coinertia(dudiX = pca, dudiY = coa, scannf = FALSE, nf = 2)
 
 --
 
-Regardons les premières valeurs propres :
+Regardons les deux premières valeurs propres :
 
 ```{r eval=TRUE}
-cia$eig[1]/sum(cia$eig) ; cia$eig[2]/sum(cia$eig) ; cia$eig[3]/sum(cia$eig)
+cia$eig[1]/sum(cia$eig) ; cia$eig[2]/sum(cia$eig)
 ```
 
-Le premier facteur extrait 99.3% de la variabilité : c'est sans doute le gradient thermique.
+Le premier facteur extrait 99.3% de la variabilité : il s'agit du gradient thermique.
 
 ---
 
 # 2) Application à des données d'écologie
 
 ## Coefficient RV et test de la significativité
-
---
 
 On regarde tout d'abord le coefficient RV, qui mesure la co-structure entre les deux tableaux.
 ```{r}
@@ -485,9 +455,7 @@ ciatest <- randtest(cia, nrepet =  999, fixed = 2)
 
 ## Coefficient RV et test de la significativité
 
---
-
-```{r warning=FALSE, out.height="35%", out.extra=FALSE}
+```{r warning=FALSE, out.height="35%", out.extra=FALSE, fig.align="center"}
 plot(ciatest)
 ```
 
@@ -501,23 +469,27 @@ RV est bien supérieur à sa distribution empirique. Il y a donc bien une corré
 
 ## Conclusion
 
+- Les deux tables ont des structures très similaires. <br>
+
 --
 
-Les deux tables ont des structures très similaires. <br>
+- Les stations de mesure sont en effet disposées selon un gradient de température. <br>
 
-Les stations de mesure sont en effet disposées selon un gradient de température. <br>
+--
 
-Or, la présence de chaque espèce de poisson dépend de la température optimale de l'espèce, et des températures minimales / maximales qu'elle peut supporter. <br>
+- Or, la présence de chaque espèce de poisson dépend de la température optimale de l'espèce, et des températures minimales / maximales qu'elle peut supporter. <br>
 
-Il y a donc une forte corrélation entre les données de la première table et de la deuxième.
+--
 
-Il convient donc d'analyser le plan de co-inertie crée, à l'aide d'outils 'classiques' : graphe des individus, des variables ...
+- Il y a donc une forte corrélation entre les données de la première table et de la deuxième.
+
+--
+
+- Il convient donc d'analyser le plan de co-inertie crée, à l'aide d'outils 'classiques' : graphe des individus, des variables ...
 
 ---
 
 # Pour résumer
-
---
 
 Les packages nécessaires : `{ade4}` et `{adegraphics}` <br>
 
@@ -570,4 +542,4 @@ class: center, middle
 
 Slides crée via le package R [**xaringan**](https://github.com/yihui/xaringan). <br>
 
-Les informations sont disponibles à cette [adresse github](https://github.com/antoinelucasfra/co-inertia_project)
+Les informations sont disponibles à cette [adresse github](https://github.com/antoinelucasfra/co-inertia_project).
