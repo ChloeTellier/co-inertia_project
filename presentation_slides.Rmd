@@ -59,16 +59,15 @@ class: center, middle
 
 # Plan de la présentation 
 
-1) La co-inertie c'est quoi?
+1) La co-inertie : presentation ?
 
-2) Un exemple : données simulées
+2) Un exemple : données 
 
-3) Pour aller plus loin...
 
 ---
 class: top
 
-# 1) La co-inertie c'est quoi?
+# 1) La co-inertie : presentation ?
 
 ## Cadre général 
 
@@ -77,10 +76,6 @@ class: top
 --
 
 - On regarde les structures communes entre les 2 tableaux (et donc les variables qui les composent)
-
---
-
-- 1 seule contrainte pour les 2 tableaux : les individus doivent être identiques (attention aux noms dans les tableaux!) et avec la même pondération.
 
 --
 
@@ -95,16 +90,13 @@ Notre exemple : des stations de mesures avec dans un premier tableau des variabl
 
 ---
 
-# 1) La co-inertie c'est quoi?
+# 1)  La co-inertie : presentation ?
 
 ## Contraintes
 
-- Les individus doivent être identiques (attention au naming!) 
+- Les individus doivent être identiques. 
 
---
 
-- La pondération entre les deux analyses factorielles doit être identique. Il faut donc fixer les poids pour un tableau en fonction du deuxième, souvent le tableau qui fixe les poids est celui des variables explicatives (X). 
-(explication genre le tableau qui permute les lignes pour le test du coeff RV n'est pas celui qui a fourni les poids).
 
 --
 
@@ -113,7 +105,7 @@ Notre exemple : des stations de mesures avec dans un premier tableau des variabl
 
 ---
 
-# 1) La co-inertie c'est quoi?
+# 1) La co-inertie : presentation ?
 ## La démarche 
 
 On réalise une analyse factorielle sur chacun des deux tableaux.
@@ -124,7 +116,7 @@ On réalise une analyse factorielle sur chacun des deux tableaux.
 
 ---
 
-# 1) La co-inertie c'est quoi?
+# 1)  La co-inertie : presentation ?
 ## La démarche 
 
 - On réalise ensuite la co-inertie sur les deux nuages de points obtenus.
@@ -145,21 +137,22 @@ $$\operatorname{cov}^{2}\left(X Q u_{1}, Y R v_{1}\right)=\operatorname{cor}^{2}
 - On obtient ainsi un seul sous-espace maximisant les relations entre les variables des 2 tableaux.
 
 ---
-# 1) La co-inertie c'est quoi?
+# 1)  La co-inertie : presentation ?
 ## La démarche 
 
-- Les relations entre les deux tableaux sont indiqué par le coefficient de corrélation RV :
-$$\mathrm{RV}\left(\mathrm{W}_{i}\mathrm{W}_{\mathrm{i}}\right)=\operatorname{trace}\left(\mathrm{W}_{1} \mathrm{W}_{\mathrm{j}}\right) /\left[\operatorname{trace}\left(\mathrm{W}_{\mathrm{i}} \mathrm{W}_{\mathrm{i}}\right) \cdot \operatorname{trace}\left(\mathrm{W}_{\mathrm{j}}, \mathrm{W}_{\mathrm{j}}\right)\right]^{1/2}$$
+- Les relations entre les deux tableaux sont indiqué par le coefficient de corrélation RV.
 
-ou bien 
+--
 
-$$R V(\mathbf{X},\mathbf{Y})=\frac{\operatorname{cov}(\mathbf{X},\mathbf{Y})}{\sqrt{\operatorname{vav}(\mathbf{X})} \sqrt{\operatorname{vav}(\mathbf{Y})}}$$
+- RV varie entre 0 et 1.
 
-ou bien 
+-- 
 
-$$R V_{\max }(\mathbf{X}, \mathbf{Y})=\sqrt{\frac{\sum_{i=1}^{q}\lambda_{i}^{2}}{\sum_{i=1}^{q}\lambda_{i}^{2}}}$$
+- --> RV proche de 1 : forte correlation entre nos 2 tableaux.
 
-EXPLIQUEZ LES VALEURS DES COEFFS / vous etes sur de vouloir mettre ca ?
+--
+
+- --> RV proche de 0 : faible correlation.
 
 ---
 
@@ -502,15 +495,6 @@ table.value(cia$tab)
 ```
 On a ....
 
----
-
-# 3 - Pour aller plus loin...
-On peux s'intéresser non pas à une analyse de co-inertie à 2 tableaux mais à K tableaux!
-<sup>1</sup>
-
-.footnote[
-[1] [Chessel, D. and M. Hanafi. “Analyses de la co-inertie de K nuages de points.” (1996).](http://www.numdam.org/article/RSA_1996__44_2_35_0.pdf)
-]
 
 ---
 
@@ -521,14 +505,26 @@ Les packages nécessaires : `{ade4}` et `{adegraphics}` <br>
 La démarche à adopter :
 - Etape 1 : Analyse factorielle simple (ACP, ACM, AFC) avec les fonctions `ade4::dudi.pca ou ade4::dudi.fca ou ade4::dudi.acm`
 
+--
+<br>
 - Etape 2 : Vérifications de la structure des individus dans les deux tableaux et vérifications des poids de chaque nuages de points avec `dudi.pca$lw`
 
-- Etape 3 : faire la co-inertie entre les deux plans factoriel `ade4::coinertia`
+--
+<br>
+- Etape 3 : faire la co-inertie entre les deux plans factoriel `ade4::coinertia(pca1, pca2)`
 
+--
+<br>
 - Etape 4 : tester la significativité de la [corrélation des deux tableaux] co-inertie : test de Monte-Carlo. <br>
 `randtest(results_coinertia, nrepet=999)`
 
+--
+<br>
 - Etape 5 : si le test est intéressant, interprétation des analyses de co-inertie (valeurs propres, graphiques)
+
+--
+<br>
+--> On peux s'intéresser non pas à une analyse de co-inertie à 2 tableaux mais à K tableaux!
 
 ---
 
