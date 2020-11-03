@@ -1,6 +1,6 @@
 ---
-title: "Co-inertie"
-subtitle: "Présentation"
+title: "La co-inertie"
+#subtitle: "Présentation"
 author: "Antoine Lucas, Julien Petot, Chloé Tellier"
 institute: "Agrocampus Ouest"
 date: "`r Sys.Date()`"
@@ -59,56 +59,58 @@ class: center, middle
 
 # Plan de la présentation 
 
-1) La co-inertie : presentation ?
+1) La co-inertie : présentation
 
-2) Un exemple : données 
-
+2) Application à des données d'écologie
 
 ---
 class: top
 
-# 1) La co-inertie : presentation ?
+# 1) La co-inertie : présentation
 
 ## Cadre général 
+
+--
 
 - On a 2 tableaux : même individus et différentes variables 
 
 --
 
-- On regarde les structures communes entre les 2 tableaux (et donc les variables qui les composent)
+- On regarde les structures communes entre les 2 tableaux
 
 --
 
-Cadre typique : un tableau avec plutôt des variables réponses (matrice Y) et le deuxième avec plutôt des variables explicatives (matrice X). <br>
+Cadre typique : le premier tableau contient plutôt des variables réponses ; le deuxième tableau contient plutôt des variables explicatives. <br>
 
 --
 
-Notre exemple : des stations de mesures avec dans un premier tableau des variables d'abondances d'espèces (Y) et dans le deuxième tableau des variables environnementales(X)). 
-<br>
+Exemple : le premier tableau contient, pour différentes stations de mesures, les données d'abondance de 10 espèces de poissons ; le deuxième tableau contient, pour les mêmes stations de mesures, des variables environnementales. <br>
 
-*Objectif* : regarder les relations entre les abondances et l'environnement
+*Objectif* : regarder les relations entre les données d'abondance et les données environnementales.
 
 ---
 
-# 1)  La co-inertie : presentation ?
+# 1)  La co-inertie : présentation
 
 ## Contraintes
 
-- Les individus doivent être identiques. 
+--
 
-
+- Les individus doivent être identiques, et dans le même ordre dans les deux tableaux.
 
 --
 
-- Les individus doivent avoir la même pondération entre les deux tableaux, i.e que les poids attribués à la première analyse factorielle doivent être identiques aux poids de la seconde analyse factorielle 
-
+- Dans chacune des analyses factorielles réalisées, les individus doivent avoir la même pondération, i.e les poids attribués à la première analyse factorielle doivent être identiques aux poids de la seconde analyse factorielle.
 
 ---
 
-# 1) La co-inertie : presentation ?
+# 1) La co-inertie : présentation
+
 ## La démarche 
 
-On réalise une analyse factorielle sur chacun des deux tableaux.
+--
+
+- On réalise une analyse factorielle sur chacun des deux tableaux.
 
 .center[
 ![analyse factorielle](figures/schema_coinertia1.png)
@@ -116,10 +118,13 @@ On réalise une analyse factorielle sur chacun des deux tableaux.
 
 ---
 
-# 1)  La co-inertie : presentation ?
+# 1)  La co-inertie : présentation
+
 ## La démarche 
 
-- On réalise ensuite la co-inertie sur les deux nuages de points obtenus.
+--
+
+- On réalise la co-inertie sur les deux nuages de points obtenus.
 
 .center[
 ```{r echo=FALSE, out.height= "35%", out.extra=FALSE}
@@ -134,46 +139,44 @@ $$\operatorname{cov}^{2}\left(X Q u_{1}, Y R v_{1}\right)=\operatorname{cor}^{2}
 
 --
 
-- On obtient ainsi un seul sous-espace maximisant les relations entre les variables des 2 tableaux.
+- On obtient ainsi un seul sous-espace, maximisant les relations entre les variables des 2 tableaux.
 
 ---
-# 1)  La co-inertie : presentation ?
+
+# 1)  La co-inertie : présentation
+
 ## La démarche 
 
-- Les relations entre les deux tableaux sont indiqué par le coefficient de corrélation RV.
+--
+
+Les relations entre les deux tableaux sont indiqué par le coefficient de corrélation RV.
 
 --
 
-- RV varie entre 0 et 1.
-
--- 
-
-- --> RV proche de 1 : forte correlation entre nos 2 tableaux.
+RV varie entre 0 et 1.
 
 --
 
-- --> RV proche de 0 : faible correlation.
+- RV proche de 1 : forte correlation entre nos 2 tableaux.
+- RV proche de 0 : faible correlation.
 
 ---
 
-# La démarche 
-## Test de co-structure
+# 1)  La co-inertie : présentation
 
-On cherche à tester la significativité de la co-structure entre les 2 tableaux afin de déterminer si il y a bel et bien des relations entre les variables des deux tableaux d'origine.
-
-Pour cela, on :
+## La démarche : test de co-structure
 
 --
 
-- Calcule le coefficient RV entre les 2 tableaux (coefficient de corrélation)
+On cherche à tester la significativité de la co-structure entre les 2 tableaux.
 
 --
 
-- Permute les lignes d'un des 2 tableaux et on recalcule le coefficient RV
+Pour cela, on calcule le coefficient RV entre les 2 tableaux (coefficient de corrélation). Puis on permute les lignes d'un des 2 tableaux, et on recalcule le coefficient RV en prenant en compte ce 'nouveau tableau'. On itère ce processus un grand nombre de fois (au moins 900 fois).
 
 --
 
-- Itère ce processus autant de fois que l'on veux (au moins 900 fois).
+Attention : le tableau sur lequel on effectue les permutations de ligne ne doit pas être celui qui a fourni les pondérations utilisées en analyse factorielle.
 
 --
 
@@ -185,12 +188,12 @@ knitr::include_graphics("figures/Rplot.png")
 
 ---
 
-# 2) Un exemple : données simulées
-## Premier tableau : données d'abondances 
+# 2) Application à des données d'écologie
+
+## Simulation du premier tableau : données d'abondances 
 
 ```{r include=FALSE}
-
-# ON INCLUT PAS CE CHUNK DANS LA PRESENTATION 
+# Chunk non inclus dans la présentation
 
 ##### On construit le premier tableau
 
@@ -259,69 +262,42 @@ for( i in 2:nsp ){
 }
 
 # La structure des données est très simple, on a une succession des espèces le long du gradient
-table.value(data,)
+table.value(data, clegend=0)
 # En abscisse les stations, en ordonnée les espèces
 
-```
-
-On a simulé un jeu de données pour obtenir des données sur les abondances de poissons selon différents points de mesures effectués par des stations.
-
-# diapo vraiment utile ? juste pour montrer la gueule du dataset quoi nan?
-
-```{r eval=TRUE}
 data.vv <- data[sample(nrow(data)), sample(ncol(data))] # On permute aléatoirement lignes et colonnes
 head(data.vv[,1:15])
-```
 
-<!-- --- -->
-
-<!-- # 2) Un exemple : données simulées -->
-<!-- ## Premier tableau : données d'abondances -->
-
-<!-- On représente ici la structure du jeu de donnés. -->
-<!-- #####diapo vraiment utile ? -->
-
-<!-- .center[ -->
-<!-- ```{r} -->
-<!-- table.value(data.vv) -->
-
-<!-- ``` -->
-<!-- ] -->
-<!-- On remarque bien qu'une structure va exister mais c'est désordonné dû aux aléas naturels. -->
-
----
-
-# 2) Un exemple : données simulées
-# Réalisation de l'AFC du premier tableau
-
-On fait l'Analyse Factorielle des Correspondances du premier tableau
-```{r out.height="35%"}
 afc <- dudi.coa(data.vv,scannf = F)
 scatter(afc)
+
+data.vv.ord <- data.vv[order(afc$li[, 1]), order(afc$co[, 1])]
 ```
 
-- On visualise bien l'effet Guttman (les données ont une forme de parabole) qui témoigne de liaisons fortes entre les variables.
+--
 
----
+On crée un jeu de données qui contient, pour 16 stations de mesure différentes, les données d'abondance de différents poissons. On a donc 16 individus et 10 variables.
 
-# 2) Un exemple : données simulées
-# Réalisation de l'AFC du premier tableau
+--
 
-###### moi je commencerais direct la 
-
-On ré-ordonne le tableau pour mettre en évidence la structure dûe au gradient de température.
-
-```{r}
-data.vv.ord <- data.vv[order(afc$li[, 1]), order(afc$co[, 1])]
+.center[
+```{r echo=FALSE, out.height= "35%", out.extra=FALSE}
 table.value(data.vv.ord)
 ```
+]
+
+--
+
+On constate que pour chaque station, certains poissons sont présents et d'autres sont absents. Les stations semblent être réparties sur un gradient (mais de quelle variable ?) qui conditionne la présence et l'absence de certaines espèces.
 
 ---
 
-# 2) Un exemple : données simulées
-## Deuxième tableau : données environnementales 
+# 2) Application à des données d'écologie
+
+## Simulation du deuxième tableau : données environnementales 
 
 ```{r include=FALSE}
+# Chunk non inclus dans la présentation
 
 ##### On construit le deuxième tableau
 
@@ -341,57 +317,90 @@ mesureT <- sapply(Tstations, function(x){10*sin(seq(0, pi,le = 24)) + x + rnorm(
 colnames(mesureT) <- paste("st", 1:16, sep = "")
 rownames(mesureT) <- paste("h", 1:24, sep = "")
 
-```
-
-On a simulé un jeu de données pour obtenir des données sur les températures au sein des différentes stations pour les 24 heures de la journée.
-
-```{r}
 head(mesureT[,1:7])
 ```
 
----
+--
 
-# 2) Un exemple : données simulées
-## Deuxième tableau : données environnementales 
+On crée un jeu de données qui contient, pour les mêmes 16 stations de mesure, la température à chaque heure de la journée. On a donc 16 individus et 24 variables.
 
-On représente graphiquement pour bien observer le gradient de température pour chaque station et l'aléa généré pour "coller" à des données réelles ainsi que la composante circadienne.
+--
+
+La représentation graphique suivante permet de bien observer les différences de température entre chaque station (ainsi que la composante circadienne et l'aléa généré, le 'bruit') :
 
 .center[
-```{r echo=FALSE, eval=TRUE}
+```{r echo=FALSE, out.height= "35%", out.extra=FALSE}
 knitr::include_graphics("figures/line_plot_tab2.png")
 ```
 ]
 
 ---
 
-# 2) Un exemple : données simulées
+# 2) Application à des données d'écologie
+
+## Réalisation de l'AFC du premier tableau
+
+--
+
+On réalise l'Analyse Factorielle des Correspondances du premier tableau.
+
+--
+
+```{r out.height="35%", out.extra=FALSE}
+afc <- dudi.coa(data.vv,scannf = F)
+scatter(afc)
+```
+
+--
+
+On visualise bien l'effet Guttman : les données ont une forme de parabole.
+
+---
+
+# 2) Application à des données d'écologie
+
 ## Réalisation de l'ACP du deuxième tableau
 
-On fait l'Analyse en Composante Principale du second tableau.
+--
 
-On transpose le tableau pour mettre les stations en ligne donc en tant qu'individus
-```{r eval=TRUE}
+On réalise l'Analyse en Composante Principale du second tableau.
+
+--
+
+```{r eval=TRUE, out.extra=FALSE, out.height="35%"}
 acp <- dudi.pca(t(mesureT), scan=FALSE) 
 scatter(acp)
 ```
 
-On observe le résultat de l'ACP. 99%... est expliqué par la première composante de l'ACP, on peux supposer qu'il s'agit du gradient de température.
-### DETAILLER UN PEU LAAA
+--
+
+Le premier axe de l'ACP explique plus de 99% de la variabilité : on peut supposer qu'il s'agit du gradient de température entre les différentes stations.
 
 ---
-# 2) Un exemple : données simulées
+
+# 2) Application à des données d'écologie
+
 ## Réalisation de l'ACP du deuxième tableau
 
-```{r eval=TRUE}
-plot(Tstations, acp$li[,1], ylab = "F1", xlab = "Température",
-     main = "Le premier facteur de l'ACP est le gradient thermique", pch = 19)
+--
+
+Nous vérifions cette hypothèse :
+
+```{r eval=TRUE, out.extra=FALSE, out.height="35%"}
+plot(Tstations, acp$li[,1], ylab = "F1", xlab = "Température", pch = 19)
 ```
-On remarque bien que la première valeur propre F1 de l'ACP est très fortement corrélée au gradient de température.
+
+--
+
+La première valeur propre de l'ACP, F1, correspond donc bien au gradient de température.
 
 ---
 
-# 2) Un exemple : données simulées
-## Réalisation de la co-inertie - Vérifications 
+# 2) Application à des données d'écologie
+
+## Vérifications nécessaires à la réalisation de la co-inertie
+
+--
 
 .pull-left[1) On vérifie que les individus sont bien en ligne dans les deux tableaux et on réarrange au besoin. <br>
 ```{r eval=TRUE}
@@ -399,13 +408,16 @@ dim(data)
 dim(mesureT)
 ```
 
-Puis on réordonne les tableaux au besoin (ici il faut transposer). <br>
+Il faut transposer nos tableaux pour mettre les stations de mesure en ligne. <br>
 ```{r eval=TRUE}
 tab1 <- as.data.frame(t(data))
 tab2 <- as.data.frame(t(mesureT))
 dim(tab1) ; dim(tab2)
 ```
 ]
+
+--
+
 .pull-right[
 2) On vérifie que les individus sont bien dans le même ordre dans les deux tableaux. <br>
 ```{r eval=TRUE}
@@ -422,109 +434,120 @@ all.equal(pca$lw,coa$lw)
 
 ---
 
-# 2) Un exemple : données simulées
-# Réalisation de la co-inertie - Exécution
+# 2) Application à des données d'écologie
 
-Tout est bon, on peut utiliser l'analyse de co-inertie pour coupler les deux tableaux.
+## Réalisation de la co-inertie
+
+--
+
+Une fois les vérifications effectuées, on peut utiliser l'analyse de co-inertie pour coupler les deux tableaux.
 
 ```{r}
 cia <- coinertia(dudiX = pca, dudiY = coa, scannf = FALSE, nf = 2)
 ```
 
-On regarde les premières valeurs propres 
+--
+
+Regardons les premières valeurs propres :
+
 ```{r eval=TRUE}
 cia$eig[1]/sum(cia$eig) ; cia$eig[2]/sum(cia$eig) ; cia$eig[3]/sum(cia$eig)
 ```
-Le premier facteur extrait 99.3% de la variabilité, c'est le gradient thermique (commun aux 2 tableaux).
+
+Le premier facteur extrait 99.3% de la variabilité : c'est sans doute le gradient thermique.
 
 ---
 
-# 2) Un exemple : données simulées
-## Test de la significativité
+# 2) Application à des données d'écologie
 
-On regarde la significativité de la co-structure entre les deux tables.
+## Coefficient RV et test de la significativité
+
+--
+
+On regarde tout d'abord le coefficient RV, qui mesure la co-structure entre les deux tableaux.
 ```{r}
 cia$RV
 ```
 
-On fait un test basé sur la comparaison entre la valeur de la co-inertie totale (coefficient RV entre
-les 2 tables) et la distribution empirique du coefficient RV qd on détruit la co-structure entre les 2 tables en permutant les lignes de l'une d'entre elle (celle des variables explicatives??).
+--
 
----
-# 2) Un exemple : données simulées
-## Test de la significativité
+Il faut ensuite vérifier la significativité de ce coefficient : pour cela on le compare avec la distribution empirique du coefficient RV lorsque l'on détruit la co-structure entre les deux tableaux (en permutant les lignes de l'un d'entre eux).
+
+--
 
 ```{r warning=FALSE, out.height="30%",out.extra="30%", out.extra='style="float:left; padding:10px"'}
 ciatest <- randtest(cia, nrepet =  999, fixed = 2)
+```
+
+---
+
+# 2) Application à des données d'écologie
+
+## Coefficient RV et test de la significativité
+
+--
+
+```{r warning=FALSE, out.height="35%", out.extra=FALSE}
 plot(ciatest)
 ```
-### VERIFIER LES POIDS CA VA PAS LAA
-Donc ici la co-structure ou corrélation est importante entre les 2 tables, car le RV est bien supérieur à la distribution aléatoire entre les 2 tables (si pas de corrélation).
+
+--
+
+RV est bien supérieur à sa distribution empirique. Il y a donc bien une corrélation importante entre les structures des deux tables. <br>
 
 ---
-# 2) Un exemple : données simulées
-## Graphiques et représentations - tableau 1
 
-On représente les données d'abondance du premier tableau.
-```{r}
-# Données d'abondance (tab1, AFC)
-table.value(t(coa$tab))
-```
-On a.... 
+# 2) Application à des données d'écologie
 
----
-# 2) Un exemple : données simulées
-## Graphiques et représentations - tableau 2
+## Conclusion
 
-On représente les données de température du second tableau.
-```{r}
-# Données de température (tab2, ACP)
-table.value(pca$tab)
-```
+--
 
-On a ....
+Les deux tables ont des structures très similaires. <br>
 
----
-# 2) Un exemple : données simulées
-## Graphiques et représentations - co-inertie 
+Les stations de mesure sont en effet disposées selon un gradient de température. <br>
 
-On représente les données de co-inertie du sous espace crée.
-```{r}
-# Analyse de co-inertie
-table.value(cia$tab)
-```
-On a ....
+Or, la présence de chaque espèce de poisson dépend de la température optimale de l'espèce, et des températures minimales / maximales qu'elle peut supporter. <br>
 
+Il y a donc une forte corrélation entre les données de la première table et de la deuxième.
+
+Il convient donc d'analyser le plan de co-inertie crée, à l'aide d'outils 'classiques' : graphe des individus, des variables ...
 
 ---
 
 # Pour résumer
 
+--
+
 Les packages nécessaires : `{ade4}` et `{adegraphics}` <br>
 
+--
+
 La démarche à adopter :
-- Etape 1 : Analyse factorielle simple (ACP, ACM, AFC) avec les fonctions `ade4::dudi.pca ou ade4::dudi.fca ou ade4::dudi.acm`
 
 --
-<br>
-- Etape 2 : Vérifications de la structure des individus dans les deux tableaux et vérifications des poids de chaque nuages de points avec `dudi.pca$lw`
+
+- Etape 1 : réaliser, pour chaque tableau, une analyse factorielle simple (ACP, ACM, AFC) --> fonctions `ade4::dudi.pca ou ade4::dudi.fca ou ade4::dudi.acm`
 
 --
-<br>
-- Etape 3 : faire la co-inertie entre les deux plans factoriel `ade4::coinertia(pca1, pca2)`
+
+- Etape 2 : effectuer les vérifications nécessaires (individus identiques et dans le même ordre, poids de chaque individu identique dans chacune des analyses factorielles)
 
 --
-<br>
-- Etape 4 : tester la significativité de la [corrélation des deux tableaux] co-inertie : test de Monte-Carlo. <br>
-`randtest(results_coinertia, nrepet=999)`
+
+- Etape 3 : effectuer la co-inertie entre les deux plans factoriels --> fonction `ade4::coinertia(pca1, pca2)`
 
 --
-<br>
+
+- Etape 4 : tester la significativité du coefficient RV entre les deux tableaux (test de Monte-Carlo) --> fonction `randtest(results_coinertia, nrepet=999)`
+
+--
+
 - Etape 5 : si le test est intéressant, interprétation des analyses de co-inertie (valeurs propres, graphiques)
 
 --
-<br>
---> On peux s'intéresser non pas à une analyse de co-inertie à 2 tableaux mais à K tableaux!
+
+Pour aller plus loin, on peut s'intéresser non pas à une analyse de co-inertie à 2 tableaux, mais à K tableaux !
 
 ---
 
@@ -548,7 +571,3 @@ class: center, middle
 Slides crée via le package R [**xaringan**](https://github.com/yihui/xaringan). <br>
 
 Les informations sont disponibles à cette [adresse github](https://github.com/antoinelucasfra/co-inertia_project)
-
-
-
-
