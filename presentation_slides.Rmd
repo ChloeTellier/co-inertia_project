@@ -96,8 +96,6 @@ Exemple :
 
 ## La démarche 
 
---
-
 - On réalise une analyse factorielle sur chacun des deux tableaux.
 
 .center[
@@ -109,8 +107,6 @@ Exemple :
 # 1)  La co-inertie : présentation
 
 ## La démarche 
-
---
 
 - On réalise la co-inertie sur les deux nuages de points obtenus.
 
@@ -170,15 +166,15 @@ On cherche à tester la significativité de la co-structure entre les 2 tableaux
 
 --
 
-__Attention!__ : le tableau sur lequel on effectue les permutations de ligne ne doit pas être celui qui a fourni les pondérations utilisées en analyse factorielle.
-
---
-
 .center[
 ```{r echo=FALSE, out.height= "35%", out.extra=FALSE}
 knitr::include_graphics("figures/Rplot.png")
 ```
 ]
+
+--
+
+__Attention!__ : le tableau sur lequel on effectue les permutations de ligne ne doit pas être celui qui a fourni les pondérations utilisées en analyse factorielle.
 
 ---
 
@@ -318,15 +314,19 @@ head(mesureT[,1:7])
 
 --
 
-On crée un jeu de données qui contient, pour les mêmes 16 stations de mesure, la température à chaque heure de la journée. <br> 
+On crée un jeu de données qui contient pour les 16 stations de mesure la température à chaque heure de la journée.
 
-On a donc 16 individus et 24 variables.
+On a donc : 
+- 16 individus (nos stations).
+- 24 variables (chaque heure de la journée).
 
 --
 .center[
-```{r echo=FALSE, out.height= "15%", out.extra=FALSE}
+```{r echo=FALSE, out.height= "35%", out.extra=FALSE}
 # knitr::include_graphics("figures/line_plot_tab2.png")
-plot(ciatest)
+plot(0, type = "n", xlim = c(1,24), ylim = range(mesureT), xlab = "Heures", ylab = "Temperature",
+     las = 1, main = "Température des stations") # Cadre vide
+apply(mesureT, 2, lines)
 ```
 ]
 

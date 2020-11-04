@@ -4,11 +4,11 @@
     <title>La co-inertie</title>
     <meta charset="utf-8" />
     <meta name="author" content="Antoine Lucas, Julien Petot, Chloé Tellier" />
-    <meta name="date" content="2020-11-03" />
+    <meta name="date" content="2020-11-04" />
     <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
     <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
     <script src="libs/tile-view/tile-view.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"ef77a26539064eb297008ba9e6d71a42","expires":1}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"d918c5087153481cb2c52170c011e7b6","expires":1}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <script src="libs/js-cookie/js.cookie.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
@@ -25,7 +25,7 @@ class: center, middle, inverse, title-slide
 # La co-inertie
 ### Antoine Lucas, Julien Petot, Chloé Tellier
 ### Agrocampus Ouest
-### 2020-11-03
+### 2020-11-04
 
 ---
 
@@ -79,8 +79,6 @@ Exemple :
 
 ## La démarche 
 
---
-
 - On réalise une analyse factorielle sur chacun des deux tableaux.
 
 .center[
@@ -92,8 +90,6 @@ Exemple :
 # 1)  La co-inertie : présentation
 
 ## La démarche 
-
---
 
 - On réalise la co-inertie sur les deux nuages de points obtenus.
 
@@ -151,13 +147,13 @@ On cherche à tester la significativité de la co-structure entre les 2 tableaux
 
 --
 
-__Attention!__ : le tableau sur lequel on effectue les permutations de ligne ne doit pas être celui qui a fourni les pondérations utilisées en analyse factorielle.
-
---
-
 .center[
 &lt;img src="figures/Rplot.png" width="40%" height="35%" FALSE /&gt;
 ]
+
+--
+
+__Attention!__ : le tableau sur lequel on effectue les permutations de ligne ne doit pas être celui qui a fourni les pondérations utilisées en analyse factorielle.
 
 ---
 
@@ -193,13 +189,19 @@ Les stations semblent être réparties selon un gradient (mais de quelle variabl
 
 --
 
-On crée un jeu de données qui contient, pour les mêmes 16 stations de mesure, la température à chaque heure de la journée. &lt;br&gt; 
+On crée un jeu de données qui contient pour les 16 stations de mesure la température à chaque heure de la journée.
 
-On a donc 16 individus et 24 variables.
+On a donc : 
+- 16 individus (nos stations).
+- 24 variables (chaque heure de la journée).
 
 --
 .center[
-&lt;img src="presentation_slides_files/figure-html/unnamed-chunk-6-1.png" width="40%" height="15%" FALSE /&gt;
+&lt;img src="presentation_slides_files/figure-html/unnamed-chunk-6-1.png" width="40%" height="35%" FALSE /&gt;
+
+```
+## NULL
+```
 ]
 
 ---
