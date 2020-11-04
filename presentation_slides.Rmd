@@ -66,9 +66,9 @@ class: center, middle
 class: top
 
 # 1) La co-inertie : présentation
-## Cadre général 
+## Cadre général
 
-- On a 2 tableaux : même individus et différentes variables 
+- On a 2 tableaux : mêmes individus et différentes variables 
 
 --
 
@@ -79,7 +79,7 @@ class: top
 Cadre typique : 
 - le premier tableau contient plutôt des variables réponses 
 
-- le deuxième tableau contient plutôt des variables explicatives. <br>
+- le deuxième tableau contient plutôt des variables explicatives <br>
 
 --
 
@@ -94,7 +94,7 @@ Exemple :
 
 # 1) La co-inertie : présentation
 
-## La démarche 
+## La démarche : analyses factorielles
 
 - On réalise une analyse factorielle sur chacun des deux tableaux.
 
@@ -106,7 +106,7 @@ Exemple :
 
 # 1)  La co-inertie : présentation
 
-## La démarche 
+## La démarche : co-inertie
 
 - On réalise la co-inertie sur les deux nuages de points obtenus.
 
@@ -123,7 +123,7 @@ $$\operatorname{cov}^{2}\left(X Q u_{1}, Y R v_{1}\right)=\operatorname{cor}^{2}
 
 --
 
-- On obtient ainsi un seul sous-espace, maximisant les relations entre les variables des 2 tableaux.
+- On obtient ainsi un seul sous-espace, maximisant les relations entre les projections des 2 tableaux.
 
 ---
 # 1)  La co-inertie : présentation
@@ -137,7 +137,7 @@ $$\operatorname{cov}^{2}\left(X Q u_{1}, Y R v_{1}\right)=\operatorname{cor}^{2}
 
 ---
 # 1)  La co-inertie : présentation
-## La démarche 
+## La démarche : test de co-structure
 
 Les relations entre les deux tableaux sont indiqué par le coefficient de corrélation RV.
 
@@ -153,7 +153,6 @@ Le coefficient RV est compris entre 0 et 1.
 ---
 
 # 1)  La co-inertie : présentation
-
 ## La démarche : test de co-structure
 
 On cherche à tester la significativité de la co-structure entre les 2 tableaux.
@@ -174,12 +173,11 @@ knitr::include_graphics("figures/Rplot.png")
 
 --
 
-__Attention!__ : le tableau sur lequel on effectue les permutations de ligne ne doit pas être celui qui a fourni les pondérations utilisées en analyse factorielle.
+__Attention__ : le tableau sur lequel on effectue les permutations de ligne ne doit pas être celui qui a fourni les pondérations utilisées en analyse factorielle.
 
 ---
 
 # 2) Application à des données d'écologie
-
 ## Simulation du premier tableau : données d'abondances 
 
 ```{r include=FALSE}
@@ -499,8 +497,8 @@ La démarche à adopter :
 
 --
 
-- Etape 1 : réaliser, pour chaque tableau, une analyse factorielle simple (ACP, ACM, AFC) --> fonctions `ade4::dudi.pca ou ade4::dudi.fca ou ade4::dudi.acm`
-
+- Etape 1 : réaliser, pour chaque tableau, une analyse factorielle simple (ACP, ACM, AFC) --> fonctions `ade4::dudi.pca` ou `ade4::dudi.fca` ou `ade4::dudi.acm`
+  
 --
 
 - Etape 2 : effectuer les vérifications nécessaires (individus identiques et dans le même ordre, poids de chaque individu identique dans chacune des analyses factorielles)
@@ -526,12 +524,12 @@ Pour aller plus loin, on peut s'intéresser non pas à une analyse de co-inertie
 # Bibliographie 
 
 - Chessel D. and Hanafi M. “Analyses de la co-inertie de K nuages de points.” (1996)
-[lien-1](http://www.numdam.org/article/RSA_1996__44_2_35_0.pdf)
+[1](http://www.numdam.org/article/RSA_1996__44_2_35_0.pdf)
 
 - Lobry J.R. "Analyse de co-inertie sur données simulées et sur
-données protéomiques." (2017) [lien-2](https://pbil.univ-lyon1.fr/R/pdf/tdr641.pdf)
+données protéomiques." (2017) [2](https://pbil.univ-lyon1.fr/R/pdf/tdr641.pdf)
 
-- de Magny C. et al. "De la statistique élémentaire à l'analyse de co-inertie." (2006) [lien-3](https://www.researchgate.net/publication/282171950_De_la_statistique_elementaire_a_l'analyse_de_co-inertie) 
+- de Magny C. et al. "De la statistique élémentaire à l'analyse de co-inertie." (2006) [3](https://www.researchgate.net/publication/282171950_De_la_statistique_elementaire_a_l'analyse_de_co-inertie) 
 
 -  A. Pannard Rennes 2, "Multivariate analysis in Ecology"
 
