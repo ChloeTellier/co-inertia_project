@@ -366,9 +366,6 @@ scatter(acp)
 
 Le premier axe de l'ACP explique plus de 99% de la variabilité : il s'agit du gradient de température entre les différentes stations.
 
-???
-bien expliciter les composantes et la répartition des variables et individus
-
 ---
 
 # 2) Application à des données d'écologie
@@ -459,7 +456,7 @@ plot(ciatest)
 
 --
 
-RV est bien supérieur à sa distribution empirique. Il y a donc bien une corrélation importante entre les structures des deux tables. <br>
+RV est bien supérieur à sa distribution empirique. Il y a donc bien une corrélation importante entre les structures des deux tableaux. <br>
 
 ---
 
@@ -467,7 +464,7 @@ RV est bien supérieur à sa distribution empirique. Il y a donc bien une corré
 
 ## Conclusion
 
-- Les deux tables ont des structures très similaires. <br>
+- Les deux tableaux ont des structures très similaires. <br>
 
 --
 
@@ -531,7 +528,7 @@ données protéomiques." (2017) [2](https://pbil.univ-lyon1.fr/R/pdf/tdr641.pdf)
 
 - de Magny C. et al. "De la statistique élémentaire à l'analyse de co-inertie." (2006) [3](https://www.researchgate.net/publication/282171950_De_la_statistique_elementaire_a_l'analyse_de_co-inertie) 
 
--  A. Pannard Rennes 2, "Multivariate analysis in Ecology"
+-  Pannard A. Rennes 2, "Multivariate analysis in Ecology"
 
 ---
 class: center, middle
